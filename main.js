@@ -1,5 +1,18 @@
 function hash(msg, output=2) {
-  
+  console.log(msg.length);
+  const msgBytes = textToByteArray(msg);
+  console.log(msgBytes.length);
+  let hash = 0;
+
+  msgBytes.forEach(byte => {
+    console.log('hash: ', hash);
+    console.log('byte: ', byte);
+    hash ^= byte;
+    console.log('xor: ', hash);
+  });
+
+  hash %= 2 ** output;
+  console.log('hash result: ', hash.toString(2));
 }
 
 function textToByteArray(str) {
@@ -14,3 +27,5 @@ function byteArrayToText(arr) {
   let str = decoder.decode(uint8Array); 
   return str;
 }
+
+hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
