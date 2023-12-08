@@ -1,20 +1,17 @@
 import { readFile } from 'fs/promises';
+import fs from 'fs';
 
 function hash(msg, output=2) {
-  console.log(msg.length);
   const msgBytes = textToByteArray(msg);
-  console.log(msgBytes.length);
   let hash = 0;
 
   msgBytes.forEach(byte => {
-    console.log('hash: ', hash);
-    console.log('byte: ', byte);
     hash ^= byte;
-    console.log('xor: ', hash);
   });
 
   hash %= 2 ** output;
-  console.log('hash result: ', hash.toString(2));
+  console.log('hash result: ', hash);
+  return hash;
 }
 
 function textToByteArray(str) {
@@ -30,13 +27,23 @@ function byteArrayToText(arr) {
   return str;
 }
 
-async function content(path) {
-  const data = await readFile(path, 'utf8');
+async function content(path, encoding='utf8') {
+  const data = await readFile(path, {encoding: encoding} );
   return data;
 }
 
-const res = await content('./source.js');
-console.log(res);
-//console.log(text);
+const codeFileText = await content('./source.js');
+const codeFileTextCollision = await content('./source_2b.js');
+
+// const docFileText = await content('./word.docx'); // TO FIX
+// console.log(docFileText);
+
+const imgFile = await content('./img.jpg', 'base64');
+
+fs.writeFile('./img_changed.jpg', imgFile, {encoding: 'base64'}, function(err) {
+  console.log('File created');
+});
 
 //hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
+
+console.log(hash(codeFileText) === hash(codeFileTextCollision));

@@ -18,5 +18,6 @@ function caesarCipher(msg, key, alphabet, n, type='encrypt') {
   return encryptedMessageArr.join('');
 }
 const empty = {};
+12
 
 module.exports = {caesarCipher};
