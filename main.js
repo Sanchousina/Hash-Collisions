@@ -28,8 +28,18 @@ function byteArrayToText(arr) {
 }
 
 async function content(path, encoding='utf8') {
-  const data = await readFile(path, {encoding: encoding} );
-  return data;
+  try {
+    const data = await readFile(path, {encoding: encoding} );
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function writeImage(outputPath, data) {
+  fs.writeFile(outputPath, data, {encoding: 'base64'}, function(err) {
+    console.log('File created');
+  });
 }
 
 const codeFileText = await content('./source.js');
@@ -39,10 +49,8 @@ const codeFileTextCollision = await content('./source_2b.js');
 // console.log(docFileText);
 
 const imgFile = await content('./img.jpg', 'base64');
+writeImage('./img_changed.jpg', imgFile);
 
-fs.writeFile('./img_changed.jpg', imgFile, {encoding: 'base64'}, function(err) {
-  console.log('File created');
-});
 
 //hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
 
