@@ -1,3 +1,5 @@
+import { readFile } from 'fs/promises';
+
 function hash(msg, output=2) {
   console.log(msg.length);
   const msgBytes = textToByteArray(msg);
@@ -28,4 +30,13 @@ function byteArrayToText(arr) {
   return str;
 }
 
-hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
+async function content(path) {
+  const data = await readFile(path, 'utf8');
+  return data;
+}
+
+const res = await content('./source.js');
+console.log(res);
+//console.log(text);
+
+//hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
