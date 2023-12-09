@@ -1,5 +1,6 @@
 import { readFile } from 'fs/promises';
 import fs from 'fs';
+import crypto from 'crypto'
 
 function hash(msg, output=2) {
   const msgBytes = textToByteArray(msg);
@@ -45,11 +46,30 @@ function writeImage(outputPath, data) {
 const codeFileText = await content('./originals/source.js');
 const codeFileTextCollision = await content('./collissions/source_2b.js');
 
-const imgFile = await content('./originals/img.jpg', 'base64');
-writeImage('./collissions/img_changed.jpg', imgFile);
+const base64Image = await content('./originals/img.jpg', 'base64');
+const newBase64Image = modifyImage(base64Image);
+console.log('--------------IMAGE------------------');
+console.log(hash(base64Image) === hash(newBase64Image));
+writeImage('./collissions/img_changed.jpg', newBase64Image);
 
 // TODO: Modyfing img base64
+function modifyImage(base64Image) {
+  const buffer = Buffer.from(base64Image, 'base64');
+
+  const insertionPoint = crypto.randomInt(100, buffer.length);
+  const numBytesToModify = crypto.randomInt(3, 11);
+  const newBytes = crypto.randomBytes(numBytesToModify).toString();
+
+  // Modify the random bytes
+  buffer.write(newBytes, insertionPoint, numBytesToModify, 'binary');
+
+  const modifiedBase64 = buffer.toString('base64');
+
+  return modifiedBase64;
+}
+
 
 // TODO: Reading docx file
 
+console.log('--------------CODE FILE------------------');
 console.log(hash(codeFileText) === hash(codeFileTextCollision));
