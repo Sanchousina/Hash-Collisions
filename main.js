@@ -96,7 +96,7 @@ function addRandomCharsToString(inputString) {
   let randomChars = '';
   const fromCode = 48;
   const toCode = 126;
-  const length = crypto.randomInt(1, 11);
+  const length = crypto.randomInt(1, 3);
 
   for (let i = 0; i < length; i++) {
     const randomCodePoint = Math.floor(Math.random() * (toCode - fromCode + 1)) + fromCode;
@@ -110,4 +110,21 @@ function addRandomCharsToString(inputString) {
 
 console.log('--------------CODE FILE------------------');
 
-console.log(addRandomCharsToString(codeFileText));
+let i = 0;
+
+  while(true) {
+    console.log('\n------Iteration: ', i);
+
+    const newCodeText = addRandomCharsToString(codeFileText);
+    const collisison = hash(codeFileText, 4) === hash(newCodeText, 4);
+
+    if (collisison === true) {
+
+      fs.writeFile('./collissions/code_collission.js', newCodeText, function(err) {
+        console.log('File created');
+      });
+
+      break;
+    }
+    i++;
+  }
