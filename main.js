@@ -48,22 +48,8 @@ const codeFileTextCollision = await content('./collissions/source_2b.js');
 
 const base64Image = await content('./originals/img.jpg', 'base64');
 
-console.log('--------------IMAGE------------------');
-let i = 0;
-while(true) {
-  console.log('\n------Iteration: ', i);
+findCollissionImage(base64Image, 4);
 
-  const newBase64Image = modifyImage(base64Image);
-  const collisison = hash(base64Image, 4) === hash(newBase64Image, 4);
-
-  if (collisison === true) {
-    writeImage('./collissions/img_changed.jpg', newBase64Image);
-    break;
-  }
-  i++;
-}
-
-// TODO: Modyfing img base64
 function modifyImage(base64Image) {
   const buffer = Buffer.from(base64Image, 'base64');
 
@@ -77,6 +63,25 @@ function modifyImage(base64Image) {
   const modifiedBase64 = buffer.toString('base64');
 
   return modifiedBase64;
+}
+
+function findCollissionImage(base64Image, hashOutput) {
+  console.log('--------------IMAGE------------------');
+
+  let i = 0;
+
+  while(true) {
+    console.log('\n------Iteration: ', i);
+
+    const newBase64Image = modifyImage(base64Image);
+    const collisison = hash(base64Image, hashOutput) === hash(newBase64Image, hashOutput);
+
+    if (collisison === true) {
+      writeImage('./collissions/img_changed.jpg', newBase64Image);
+      break;
+    }
+    i++;
+  }
 }
 
 
