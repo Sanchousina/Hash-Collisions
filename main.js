@@ -42,16 +42,14 @@ function writeImage(outputPath, data) {
   });
 }
 
-const codeFileText = await content('./source.js');
-const codeFileTextCollision = await content('./source_2b.js');
+const codeFileText = await content('./originals/source.js');
+const codeFileTextCollision = await content('./collissions/source_2b.js');
 
-// const docFileText = await content('./word.docx'); // TO FIX
-// console.log(docFileText);
+const imgFile = await content('./originals/img.jpg', 'base64');
+writeImage('./collissions/img_changed.jpg', imgFile);
 
-const imgFile = await content('./img.jpg', 'base64');
-writeImage('./img_changed.jpg', imgFile);
+// TODO: Modyfing img base64
 
-
-//hash('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed nisl congue, congue leo vitae, vestibulum ligula');
+// TODO: Reading docx file
 
 console.log(hash(codeFileText) === hash(codeFileTextCollision));
