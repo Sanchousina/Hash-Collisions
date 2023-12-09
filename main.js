@@ -108,23 +108,28 @@ function addRandomCharsToString(inputString) {
   return stringWithRandomChars;
 }
 
-console.log('--------------CODE FILE------------------');
+function findCollissionCode(codeFileText, hashOutput) {
+  console.log('--------------CODE FILE------------------');
 
-let i = 0;
-
-  while(true) {
-    console.log('\n------Iteration: ', i);
-
-    const newCodeText = addRandomCharsToString(codeFileText);
-    const collisison = hash(codeFileText, 4) === hash(newCodeText, 4);
-
-    if (collisison === true) {
-
-      fs.writeFile('./collissions/code_collission.js', newCodeText, function(err) {
-        console.log('File created');
-      });
-
-      break;
+  let i = 0;
+  
+    while(true) {
+      console.log('\n------Iteration: ', i);
+  
+      const newCodeText = addRandomCharsToString(codeFileText);
+      const collisison = hash(codeFileText, hashOutput) === hash(newCodeText, hashOutput);
+  
+      if (collisison === true) {
+  
+        fs.writeFile('./collissions/code_collission.js', newCodeText, function(err) {
+          console.log('File created');
+        });
+  
+        break;
+      }
+      i++;
     }
-    i++;
-  }
+}
+
+findCollissionCode(codeFileText, 8);
+
