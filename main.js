@@ -44,11 +44,14 @@ function writeImage(outputPath, data) {
 }
 
 const codeFileText = await content('./originals/source.js');
+
+// Manually created collission
 const codeFileTextCollision = await content('./collissions/source_2b.js');
+console.log(hash(codeFileText) === hash(codeFileTextCollision));
 
 const base64Image = await content('./originals/img.jpg', 'base64');
 
-findCollissionImage(base64Image, 4);
+//findCollissionImage(base64Image, 4);
 
 function modifyImage(base64Image) {
   const buffer = Buffer.from(base64Image, 'base64');
@@ -87,5 +90,24 @@ function findCollissionImage(base64Image, hashOutput) {
 
 // TODO: Reading docx file
 
+
+// Modify Code File
+function addRandomCharsToString(inputString) {
+  let randomChars = '';
+  const fromCode = 48;
+  const toCode = 126;
+  const length = crypto.randomInt(1, 11);
+
+  for (let i = 0; i < length; i++) {
+    const randomCodePoint = Math.floor(Math.random() * (toCode - fromCode + 1)) + fromCode;
+    randomChars += String.fromCodePoint(randomCodePoint);
+  }
+
+  const stringWithRandomChars = inputString + '//' + randomChars;
+
+  return stringWithRandomChars;
+}
+
 console.log('--------------CODE FILE------------------');
-console.log(hash(codeFileText) === hash(codeFileTextCollision));
+
+console.log(addRandomCharsToString(codeFileText));
