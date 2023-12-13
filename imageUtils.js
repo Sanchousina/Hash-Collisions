@@ -24,7 +24,7 @@ export function findCollissionImage(base64Image, hashOutput) {
 function modifyImage(base64Image) {
   const buffer = Buffer.from(base64Image, 'base64');
 
-  const insertionPoint = crypto.randomInt(100, buffer.length);
+  const insertionPoint = crypto.randomInt(100, buffer.length-100);
   const numBytesToModify = crypto.randomInt(3, 6);
   const newBytes = crypto.randomBytes(numBytesToModify).toString();
 
